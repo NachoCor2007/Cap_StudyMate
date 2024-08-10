@@ -1,16 +1,16 @@
 const express = require('express'); // Imports express library
 const app = express(); // Allows to start executing the server
-const port = 3000;
+const port = 3000; // Defines the port the server will be listening.
 
 app.use(express.json()); // Allows the server to parse payloads to JSON.
-app.use(express.urlencoded({ extended: true })); //
+app.use(express.urlencoded({ extended: true }));
 
 let db = [{
     id: 0,
-    name: "item 1"
+    name: "item 0"
 }, {
     id: 1,
-    name: "item 2"
+    name: "item 1"
 }];
 let id = 2;
 
@@ -42,8 +42,9 @@ app.put('/put/:id', (req, res) => {
     let newInfo = req.body;
     let itemToUpdate = db.find(item => item.id === idToModify);
 
-    console.log("db:", db);
     console.log("item to update: ", itemToUpdate);
+    console.log("New info of item: ", newInfo);
+    console.log("db:", db);
 
     if (itemToUpdate === undefined) {
         console.log("Item not found.");
@@ -52,8 +53,7 @@ app.put('/put/:id', (req, res) => {
     }
 
     itemToUpdate.name = newInfo.name;
-
-    console.log("db: ", db);
+    console.log("Updated db: ", db);
 
     res.send(newInfo);
 });
