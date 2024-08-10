@@ -1,9 +1,9 @@
-const express = require('express');
-const app = express();
+const express = require('express'); // Imports express library
+const app = express(); // Allows to start executing the server
 const port = 3000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // Allows the server to parse payloads to JSON.
+app.use(express.urlencoded({ extended: true })); //
 
 let db = [{
     id: 0,
