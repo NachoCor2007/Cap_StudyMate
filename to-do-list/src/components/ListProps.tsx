@@ -1,7 +1,7 @@
 import ItemProps from "./ItemProps";
 
 interface ListProps {
-    items: [ItemProps]
+    items: ItemProps[]
 }
 
 export default ListProps;
