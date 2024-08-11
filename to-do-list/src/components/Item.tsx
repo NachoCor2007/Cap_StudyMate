@@ -1,6 +1,7 @@
 import React from 'react';
 import ItemProps from "./ItemProps";
 import Checkbox from '@mui/material/Checkbox';
+import {ListItem, ListItemButton, ListItemText} from "@mui/material";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -10,12 +11,12 @@ interface UpdatableItemProps extends ItemProps {
 
 const Item: React.FC<UpdatableItemProps> = ({ id, name, isDone, onCheck }: UpdatableItemProps) => {
     return (
-        <div>
-            <label>
-                {name}
-                <Checkbox {...label} checked={isDone} color="success" onChange={() => onCheck(id)} />
-            </label>
-        </div>
+        <ListItem>
+            <ListItemButton onClick={() => onCheck(id)} >
+                <Checkbox {...label} checked={isDone} color="success" />
+                <ListItemText primary={name} />
+            </ListItemButton>
+        </ListItem>
     );
 }
 

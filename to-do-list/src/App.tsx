@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
-import List from "./components/List";
+import ListComp from "./components/ListComp";
 
 function App() {
   return (
-      <List/>
+      <ListComp/>
   );
 }
 

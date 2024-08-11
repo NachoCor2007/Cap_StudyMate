@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ListProps from "./ListProps";
 import Item from "./Item";
+import {List, Typography} from "@mui/material";
 
 const defaultTasks: ListProps = {
     items: [
@@ -21,7 +22,7 @@ function getTasksInitialState() {
     };
 }
 
-const List = () => {
+const ListComp = () => {
     // Initializes the tasks.
     const [tasks, setTasks] = useState<ListProps>(getTasksInitialState());
 
@@ -50,12 +51,17 @@ const List = () => {
     }
 
     return (
-        <div>
-            {tasks.items.map(item => (
-                <Item key={item.id} {...item} onCheck={handleCheck} />
-            ))}
-        </div>
+        <>
+            <Typography variant="h2" gutterBottom sx={{ width: '100%', px: 40, pt: 20 }} >
+                Lista de Tareas
+            </Typography>
+            <List sx={{ width: '100%', px: 40 }} >
+                {tasks.items.map(item => (
+                    <Item key={item.id} {...item} onCheck={handleCheck} />
+                ))}
+            </List>
+        </>
     );
 }
 
-export default List;
+export default ListComp;
