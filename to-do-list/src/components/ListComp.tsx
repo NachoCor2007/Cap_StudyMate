@@ -50,6 +50,20 @@ const ListComp = () => {
         });
     }
 
+    const handleDelete = (id: number) => {
+        setTasks(prevTasks => {
+            // Deletes the task with the correspondent id.
+            const updatedTasks = {
+                ...prevTasks,
+                items: prevTasks.items.filter(item => item.id !== id)
+            };
+
+            // Saves the updated tasks in localStorage.
+            localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+            return updatedTasks;
+        });
+    }
+
     return (
         <>
             <Typography variant="h2" gutterBottom sx={{ width: '100%', px: 40, pt: 20 }} >
@@ -57,7 +71,7 @@ const ListComp = () => {
             </Typography>
             <List sx={{ width: '100%', px: 40 }} >
                 {tasks.items.map(item => (
-                    <Item key={item.id} {...item} onCheck={handleCheck} />
+                    <Item key={item.id} {...item} onCheck={handleCheck} onDeletion={handleDelete} />
                 ))}
             </List>
         </>
