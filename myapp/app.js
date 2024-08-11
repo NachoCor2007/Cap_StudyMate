@@ -14,14 +14,21 @@ let db = [{
 }];
 let id = 2;
 
+// The server is now listening to the port.
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+});
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+// Returns all items in db.
 app.get('/items', (req, res) => {
     let listedItems = {};
 })
 
+// Adds item to db.
 app.post('/post', (req, res) => {
     let body = req.body;
 
@@ -37,6 +44,7 @@ app.post('/post', (req, res) => {
     res.send(newItem);
 });
 
+// Modified items in db.
 app.put('/put/:id', (req, res) => {
     let idToModify = parseInt(req.params.id);
     let newInfo = req.body;
@@ -56,8 +64,4 @@ app.put('/put/:id', (req, res) => {
     console.log("Updated db: ", db);
 
     res.send(newInfo);
-});
-
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
 });
