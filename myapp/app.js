@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 // Returns all items in db.
 app.get('/items', (req, res) => {
-    let listedItems = {};
+    res.send(db);
 })
 
 // Adds item to db.
@@ -65,3 +65,20 @@ app.put('/put/:id', (req, res) => {
 
     res.send(newInfo);
 });
+
+// Deletes an item from the db.
+app.delete('/delete/:id', (req, res) => {
+    let idToDelete = parseInt(req.params.id);
+
+    let elementToDelete = db.find(item => item.id === idToDelete);
+
+    if (elementToDelete === undefined) {
+        console.log("Item not found.");
+        res.status(404).send("Item not found.");
+        return;
+    }
+
+    db = db.filter(item => item.id !== idToDelete);
+
+    res.send(db);
+})
