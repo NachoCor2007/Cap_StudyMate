@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import ListProps from "./ListProps";
 import Item from "./Item";
+import AddItem from "./AddItem";
 import {List, Typography} from "@mui/material";
+import ItemProps from "./ItemProps";
 
 const defaultTasks: ListProps = {
     items: [
@@ -64,6 +66,20 @@ const ListComp = () => {
         });
     }
 
+    const handleAddition = (name: string) => {
+        setTasks(prevTasks => {
+            // Adds the task with the correspondent id.
+            const updatedTasks = {
+                ...prevTasks,
+                items: [...prevTasks.items, {id: prevTasks.items.length + 1, name: name, isDone: false}]
+            };
+
+            // Saves the updated tasks in localStorage.
+            localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+            return updatedTasks;
+        });
+    }
+
     return (
         <>
             <Typography variant="h2" gutterBottom sx={{ width: '100%', px: 40, pt: 20 }} >
@@ -74,6 +90,7 @@ const ListComp = () => {
                     <Item key={item.id} {...item} onCheck={handleCheck} onDeletion={handleDelete} />
                 ))}
             </List>
+            <AddItem onAddition={handleAddition}/>
         </>
     );
 }
