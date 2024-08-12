@@ -89,8 +89,8 @@ const ListComp = () => {
                 {tasks.items.map(item => (
                     <Item key={item.id} {...item} onCheck={handleCheck} onDeletion={handleDelete} />
                 ))}
+                <AddItem onAddition={handleAddition}/>
             </List>
-            <AddItem onAddition={handleAddition}/>
         </>
     );
 }

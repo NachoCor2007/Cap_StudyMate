@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {ListItem, ListItemButton} from "@mui/material";
-import { green } from '@mui/material/colors';
-import Icon from '@mui/material/Icon';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
 
 interface AddItemProps {
@@ -13,21 +12,16 @@ const AddItem: React.FC<AddItemProps> = ({onAddition}: AddItemProps) => {
 
     return(
         <ListItem>
-            <Icon
-                baseClassName="fas"
-                className="fa-plus-circle"
-                sx={{ color: green[500] }}
-            />
-
-            {/*<ListItemButton sx={{ width: '1%' }} onClick={() => onAddition(newTaskName)}>*/}
-            {/*</ListItemButton>*/}
+            <ListItemButton sx={{ width: '1%' }} onClick={() => onAddition(newTaskName)}>
+                <AddCircleIcon sx={{ width: '100%', color: 'green' }}/>
+            </ListItemButton>
             <TextField
                 id="standard-textarea"
-                label="Multiline Placeholder"
+                label="Add new task"
                 value={newTaskName}
+                sx={{ width: '80%' }}
                 multiline
-                required
-                variant="standard"
+                variant="filled"
                 onChange={e =>
                     setNewTaskName(e.target.value)
                 }
