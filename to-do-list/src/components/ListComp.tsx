@@ -1,93 +1,51 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import ListProps from "./ListProps";
 import Item from "./Item";
 import AddItem from "./AddItem";
 import {List, Typography} from "@mui/material";
+import ItemProps from "./ItemProps";
 
 const startURL: string = "http://localhost:4567/";
 
-// const defaultTasks: ListProps = {
-//     items: [
-//         {id: 0, name: "Soy una task", isDone: false},
-//         {id: 1, name: "Soy otra task", isDone: true},
-//         {id: 2, name: "tercera task", isDone: false},
-//         {id: 3, name: "Una task más", isDone: false},
-//         {id: 4, name: "Soy la última task", isDone: true}
-//     ]
-// };
-//
-// function getTasksInitialState() {
-//     return () => {
-//         // Checks if there are tasks saved in localStorage.
-//         const savedTasks = localStorage.getItem('tasks');
-//         // If there are, it parses the JSON and returns it. Else, it returns the default tasks.
-//         return savedTasks ? JSON.parse(savedTasks) : defaultTasks;
-//     };
-// }
-
-const ListComp = () => {
+const ListComp: React.FC = () => {
     // Initializes the tasks.
-    const [tasks, setTasks] = useState();
+    const [tasks, setTasks] = useState<ItemProps[]>([]);
 
     useEffect(() => {
         axios.get(startURL + "items")
-            .then(retrievedTasks => {
-                console.log(retrievedTasks.data);
+            .then(r => {
+                let retrievedTasks: ItemProps[] = r.data;
+                console.log("Fetched tasks: ", retrievedTasks);
+                setTasks(retrievedTasks);
             })
             .catch(error => console.log(error))
     }, []);
 
-    // useEffect(() => {
-    //     // Saves the tasks in localStorage.
-    //     localStorage.setItem('tasks', JSON.stringify(tasks));
-    // }, [tasks]);
-
-    const handleCheck = (id: number) => {
-        setTasks(prevTasks => {
-            // Updates the task with the correspondent id.
-            const updatedTasks = {
-                ...prevTasks,
-                items: prevTasks.items.map(item => {
-                    if (item.id === id) {
-                        item.isDone = !item.isDone;
-                    }
-                    return item;
-                })
-            };
-
-            // Saves the updated tasks in localStorage.
-            localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-            return updatedTasks;
-        });
+    const onAddition = (taskName: string) => {
+        axios.post(startURL + "post", {name: taskName})
+            .then(r => {
+                let modifiedTasks: ItemProps[] = r.data;
+                console.log("Added task: ", modifiedTasks);
+                setTasks(modifiedTasks);
+            })
     }
 
-    const handleDelete = (id: number) => {
-        setTasks(prevTasks => {
-            // Deletes the task with the correspondent id.
-            const updatedTasks = {
-                ...prevTasks,
-                items: prevTasks.items.filter(item => item.id !== id)
-            };
-
-            // Saves the updated tasks in localStorage.
-            localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-            return updatedTasks;
-        });
+    const onEdition = (task: ItemProps) => {
+        axios.put(startURL + "put/" + task.id, task)
+            .then(r => {
+                let modifiedTasks: ItemProps[] = r.data;
+                console.log("Edited task: ", modifiedTasks);
+                setTasks(modifiedTasks);
+            })
     }
 
-    const handleAddition = (name: string) => {
-        setTasks(prevTasks => {
-            // Adds the task with the correspondent id.
-            const updatedTasks = {
-                ...prevTasks,
-                items: [...prevTasks.items, {id: prevTasks.items.length + 1, name: name, isDone: false}]
-            };
-
-            // Saves the updated tasks in localStorage.
-            localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-            return updatedTasks;
-        });
+    const onDeletion = (id: number) => {
+        axios.delete(startURL + "delete/" + id)
+            .then(r => {
+                let modifiedTasks: ItemProps[] = r.data;
+                console.log("Deleted task", modifiedTasks);
+                setTasks(modifiedTasks);
+            })
     }
 
     return (
@@ -96,10 +54,10 @@ const ListComp = () => {
                 Lista de Tareas
             </Typography>
             <List sx={{ width: '100%', px: 40 }} >
-                {tasks.items.map(item => (
-                    <Item key={item.id} {...item} onCheck={handleCheck} onDeletion={handleDelete} />
+                {tasks.map(item => (
+                    <Item key={item.id} {...item} onEdition={onEdition} onDeletion={onDeletion} />
                 ))}
-                <AddItem onAddition={handleAddition}/>
+                <AddItem onAddition={onAddition} />
             </List>
         </>
     );

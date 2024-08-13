@@ -38,14 +38,15 @@ app.post('/post', (req, res) => {
 
     let newItem = {
         id: id++,
-        name: body.name
+        name: body.name,
+        isDone: false
     };
 
     db.push(newItem);
 
     console.log("Item to add: ", newItem);
     console.log("db: ", db);
-    res.send(newItem);
+    res.send(db);
 });
 
 // Modified items in db.
@@ -68,7 +69,7 @@ app.put('/put/:id', (req, res) => {
     itemToUpdate.isDone = newInfo.isDone;
     console.log("Updated db: ", db);
 
-    res.send(newInfo);
+    res.send(db);
 });
 
 // Deletes an item from the db.

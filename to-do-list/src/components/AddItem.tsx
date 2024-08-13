@@ -2,9 +2,12 @@ import React, {useState} from "react";
 import {ListItem, ListItemButton} from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
+import axios from "axios";
+
+const startURL: string = "http://localhost:4567/";
 
 interface AddItemProps {
-    onAddition: (name: string) => void
+    onAddition: (taskName: string) => void;
 }
 
 const AddItem: React.FC<AddItemProps> = ({onAddition}: AddItemProps) => {
