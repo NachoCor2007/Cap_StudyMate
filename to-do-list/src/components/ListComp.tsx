@@ -1,37 +1,47 @@
 import React, {useEffect, useState} from 'react';
+import axios from "axios";
 import ListProps from "./ListProps";
 import Item from "./Item";
 import AddItem from "./AddItem";
 import {List, Typography} from "@mui/material";
-import ItemProps from "./ItemProps";
 
-const defaultTasks: ListProps = {
-    items: [
-        {id: 0, name: "Soy una task", isDone: false},
-        {id: 1, name: "Soy otra task", isDone: true},
-        {id: 2, name: "tercera task", isDone: false},
-        {id: 3, name: "Una task más", isDone: false},
-        {id: 4, name: "Soy la última task", isDone: true}
-    ]
-};
+const startURL: string = "http://localhost:4567/";
 
-function getTasksInitialState() {
-    return () => {
-        // Checks if there are tasks saved in localStorage.
-        const savedTasks = localStorage.getItem('tasks');
-        // If there are, it parses the JSON and returns it. Else, it returns the default tasks.
-        return savedTasks ? JSON.parse(savedTasks) : defaultTasks;
-    };
-}
+// const defaultTasks: ListProps = {
+//     items: [
+//         {id: 0, name: "Soy una task", isDone: false},
+//         {id: 1, name: "Soy otra task", isDone: true},
+//         {id: 2, name: "tercera task", isDone: false},
+//         {id: 3, name: "Una task más", isDone: false},
+//         {id: 4, name: "Soy la última task", isDone: true}
+//     ]
+// };
+//
+// function getTasksInitialState() {
+//     return () => {
+//         // Checks if there are tasks saved in localStorage.
+//         const savedTasks = localStorage.getItem('tasks');
+//         // If there are, it parses the JSON and returns it. Else, it returns the default tasks.
+//         return savedTasks ? JSON.parse(savedTasks) : defaultTasks;
+//     };
+// }
 
 const ListComp = () => {
     // Initializes the tasks.
-    const [tasks, setTasks] = useState<ListProps>(getTasksInitialState());
+    const [tasks, setTasks] = useState();
 
     useEffect(() => {
-        // Saves the tasks in localStorage.
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }, [tasks]);
+        axios.get(startURL + "items")
+            .then(retrievedTasks => {
+                console.log(retrievedTasks.data);
+            })
+            .catch(error => console.log(error))
+    }, []);
+
+    // useEffect(() => {
+    //     // Saves the tasks in localStorage.
+    //     localStorage.setItem('tasks', JSON.stringify(tasks));
+    // }, [tasks]);
 
     const handleCheck = (id: number) => {
         setTasks(prevTasks => {

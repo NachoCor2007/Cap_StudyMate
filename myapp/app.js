@@ -1,16 +1,20 @@
 const express = require('express'); // Imports express library
+const cors = require('cors');
 const app = express(); // Allows to start executing the server
-const port = 3000; // Defines the port the server will be listening.
+const port = 4567; // Defines the port the server will be listening.
 
 app.use(express.json()); // Allows the server to parse payloads to JSON.
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 let db = [{
     id: 0,
-    name: "item 0"
+    name: "item 0",
+    isDone: false
 }, {
     id: 1,
-    name: "item 1"
+    name: "item 1",
+    isDone: true
 }];
 let id = 2;
 
@@ -61,6 +65,7 @@ app.put('/put/:id', (req, res) => {
     }
 
     itemToUpdate.name = newInfo.name;
+    itemToUpdate.isDone = newInfo.isDone;
     console.log("Updated db: ", db);
 
     res.send(newInfo);
