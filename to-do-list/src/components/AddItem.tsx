@@ -14,15 +14,18 @@ const AddItem: React.FC<AddItemProps> = ({onAddition}: AddItemProps) => {
     const [newTaskName, setNewTaskName] = useState('');
 
     return(
-        <ListItem>
-            <ListItemButton sx={{ width: '1%' }} onClick={() => onAddition(newTaskName)}>
+        <ListItem sx={{ display: 'flex' }} >
+            <ListItemButton sx={{ flexGrow: 2 }} onClick={() => {
+                onAddition(newTaskName)
+                setNewTaskName('');
+            }}>
                 <AddCircleIcon sx={{ width: '100%', color: 'green' }}/>
             </ListItemButton>
             <TextField
                 id="standard-textarea"
                 label="Add new task"
                 value={newTaskName}
-                sx={{ width: '80%' }}
+                sx={{ flexGrow: 50 }}
                 multiline
                 variant="filled"
                 onChange={e =>
