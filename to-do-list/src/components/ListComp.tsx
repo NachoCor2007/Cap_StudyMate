@@ -5,7 +5,7 @@ import AddItem from "./AddItem";
 import {List, Typography} from "@mui/material";
 import ItemProps from "./ItemProps";
 
-const startURL: string = "http://localhost:4567/";
+const startURL: string = "http://localhost:4567/task/";
 
 const ListComp: React.FC = () => {
     // Initializes the tasks.
@@ -24,8 +24,9 @@ const ListComp: React.FC = () => {
     const onAddition = (taskName: string) => {
         axios.post(startURL + "post", {name: taskName})
             .then(r => {
-                let modifiedTasks: ItemProps[] = r.data;
-                console.log("Added task: ", modifiedTasks);
+                let createdTask: ItemProps = r.data;
+                console.log("Added task: ", createdTask);
+                let modifiedTasks: ItemProps[] = [...tasks, createdTask];
                 setTasks(modifiedTasks);
             })
     }
@@ -33,8 +34,15 @@ const ListComp: React.FC = () => {
     const onEdition = (task: ItemProps) => {
         axios.put(startURL + "put/" + task.id, task)
             .then(r => {
-                let modifiedTasks: ItemProps[] = r.data;
-                console.log("Edited task: ", modifiedTasks);
+                let modifiedTask: ItemProps = r.data;
+                console.log("Edited task: ", modifiedTask);
+                let modifiedTasks: ItemProps[] = tasks.map(item => {
+                    if (item.id === modifiedTask.id) {
+                        return modifiedTask;
+                    } else {
+                        return item;
+                    }
+                });
                 setTasks(modifiedTasks);
             })
     }
@@ -42,8 +50,9 @@ const ListComp: React.FC = () => {
     const onDeletion = (id: number) => {
         axios.delete(startURL + "delete/" + id)
             .then(r => {
-                let modifiedTasks: ItemProps[] = r.data;
-                console.log("Deleted task", modifiedTasks);
+                let deletedTask: ItemProps = r.data;
+                console.log("Deleted task", deletedTask);
+                let modifiedTasks: ItemProps[] = tasks.filter(item => item.id !== deletedTask.id);
                 setTasks(modifiedTasks);
             })
     }
@@ -51,7 +60,7 @@ const ListComp: React.FC = () => {
     return (
         <>
             <Typography variant="h2" gutterBottom sx={{ width: '100%', px: 40, pt: 20 }} >
-                Lista de Tareas
+                To-Do list
             </Typography>
             <List sx={{ width: '100%', px: 40 }} >
                 {tasks.map(item => (

@@ -2,6 +2,7 @@ import express, {Express, Request, Response} from "express";
 import {Prisma, PrismaClient } from "@prisma/client";
 import {DefaultArgs} from "@prisma/client/runtime/library";
 import TaskRouter from "./routes/task.route";
+import cors from 'cors';
 
 export const prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs> = new PrismaClient();
 
@@ -10,6 +11,8 @@ const port:Number = 4567;
 
 async function main():Promise<void> {
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(cors());
   app.use("/task", TaskRouter);
 
   app.all("*", (req: Request, res: Response) => {
